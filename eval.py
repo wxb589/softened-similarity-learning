@@ -108,26 +108,5 @@ def evaluate(query_features, query_labels, test_features, test_labels):
     return goal
 
 
-# def evaluate(qf, ql, qc, tf, tl, tc):
-#     query = qf.view(-1, 1)  # 输出维度（自动判断，1）  （2048,1）
-#     score = torch.mm(tf, query)  # 矩阵gf与矩阵query相乘  （batch_size,1）
-#     score = score.squeeze(1).cpu()  # 第二维降低一维并转换为CPU类型的张量
-#     score = score.numpy()
-#
-#     index = np.argsort(score)  # 返回score数组值从小到大的索引值
-#     index = index[::-1]  # 将index反转，例：a='python',a[::-1]='nohtyp'  score从大到小引索
-#
-#     query_index = np.argwhere(tl == ql)  # 返回gl和ql相等的元组的引索 是否为一个人
-#     camera_index = np.argwhere(tc == qc)  # 返回gc和qc相等的元组的引索 是否是一个摄像头
-#
-#     good_index = np.setdiff1d(query_index, camera_index, assume_unique=True)
-#     junk_index1 = np.argwhere(tl == -1)  # 返回gl中为-1的元组的引索
-#     junk_index2 = np.intersect1d(query_index, camera_index)  # 找到两个数组中的交集，并返回两个输入数组的排序的唯一值
-#     junk_index = np.append(junk_index2, junk_index1)  # 将junk_index1附加到junk_index2后
-#
-#     ap_tmp, CMC_tmp = compute_map(index, good_index, junk_index)
-#     return ap_tmp, CMC_tmp
-
-
 if __name__ == '__main__':
     main()
