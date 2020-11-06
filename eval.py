@@ -10,7 +10,6 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from dataset import Market1501Dataset
 from utils import get_id
-from utils import compute_map
 
 
 def main():
