@@ -32,8 +32,8 @@ def main():
     test_filepath = os.path.join(config['Test']['output_path'], 'test.pth')
     query_filepath = os.path.join(config['Test']['output_path'], 'query.pth')
 
-    # create_embeddings(net, test_filepath, test_loader, 'test')
-    # create_embeddings(net, query_filepath, query_loader, 'query')
+    create_embeddings(net, test_filepath, test_loader, 'test')
+    create_embeddings(net, query_filepath, query_loader, 'query')
 
     print('Calculating accuracy...')
     test_loader, query_loader = load_data(config['Test Data'], transform, load_img=False)
@@ -136,7 +136,7 @@ def evaluate(test_loader, query_loader, test_filepath, query_filepath):
 
         scores = scores + score  # CMC总得分
         # AP.append(ap)
-        # score, num_true_precision, num_current_query, ap = np.zeros(10), 0, 0, 0  # 参数清零
+        score, num_true_precision, num_current_query, ap = np.zeros(10), 0, 0, 0  # 参数清零
         precision, recall = [], []
         prab.update(1)
     prab.close()
