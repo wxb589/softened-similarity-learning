@@ -21,8 +21,9 @@ class MemoryTable(object):
             total += torch.cdist(part, part)
         return total / len(self.parts)
 
-    def overall_dissimilarity(self, global_dist, parts_diss, cce):
-        result = (1 - self.lambda_p) * global_dist + self.lambda_p * parts_diss + cce
+    def overall_dissimilarity(self, global_dist, parts_diss):
+        # result = (1 - self.lambda_p) * global_dist + self.lambda_p * parts_diss + cce
+        result = (1 - self.lambda_p) * global_dist + self.lambda_p * parts_diss
         return result
 
     def cross_camera_encouragment(self, lambda_c=0.02):
@@ -41,9 +42,10 @@ class MemoryTable(object):
     def update_reliables(self):
         global_dist = self.global_distance()
         parts_diss = self.parts_dissimilarity()
-        cce = self.cross_camera_encouragment()
+        # cce = self.cross_camera_encouragment()
 
-        overall_diss = self.overall_dissimilarity(global_dist, parts_diss, cce)
+        # overall_diss = self.overall_dissimilarity(global_dist, parts_diss, cce)
+        overall_diss = self.overall_dissimilarity(global_dist, parts_diss)
         overall_diss = overall_diss.to('cpu')
         self.reliables = overall_diss.argsort(dim=1)[:, 1:self.reliable_num + 1]
 
