@@ -107,7 +107,7 @@ def evaluate(test_loader, query_loader, test_filepath, query_filepath):
     test_labels = test_labels[ids]  # 得分从大到小的测试集label排序
 
     score, scores = np.zeros(10), np.zeros(10)
-    ap, num_true_precision, num_current_query = 0, 0, 0
+    # ap, num_true_precision, num_current_query = 0, 0, 0
     precision, recall, AP = [], [], []  # 准确率召回率初始化
 
     prab = tqdm(total=len(query_labels))
@@ -119,35 +119,33 @@ def evaluate(test_loader, query_loader, test_filepath, query_filepath):
         #     if query_label == test_label[i]:
         #         num_current_query += 1
 
-        num_current_query = single_list(test_label, query_label)  # 当前检索的query在测试集中的数目
-        # num_true_query = single_list(test_label[:800], query_label)  # 检索的M个样本中正确的样本数
+        # num_current_query = single_list(test_label, query_label)  # 当前检索的query在测试集中的数目
 
         for index in range(10):  # 计算CMC得分和预测正确的次数
             if query_label == test_label[index]:
                 score[index:] = 1
-                num_true_precision = num_true_precision + 1
-                precision.append(num_true_precision / (index + 1))  # 当前检索的query的准确率
+                # num_true_precision = num_true_precision + 1
+                # precision.append(num_true_precision / (index + 1))  # 当前检索的query的准确率
                 # recall.append(num_true_precision / num_current_query)  # 当前检索的query的召回率
 
-                if index == 0:
-                    ap = (1 / num_current_query) * (precision[0] + precision[0]) / 2
-                else:
-                    ap = ap + (1 / num_current_query) * (
-                                (precision[num_true_precision - 1] + precision[num_true_precision - 2]) / 2)  # 计算AP
+                # if index == 0:
+                #     ap = (1 / num_current_query) * (precision[0] + precision[0]) / 2
+                # else:
+                #     ap = ap + (1 / num_current_query) * (
+                #                 (precision[num_true_precision - 1] + precision[num_true_precision - 2]) / 2)  # 计算AP
 
         scores = scores + score  # CMC总得分
-        AP.append(ap)
-        score, num_true_precision, num_current_query, ap = np.zeros(10), 0, 0, 0  # 参数清零
+        # AP.append(ap)
+        # score, num_true_precision, num_current_query, ap = np.zeros(10), 0, 0, 0  # 参数清零
         precision, recall = [], []
         prab.update(1)
     prab.close()
     CMC = scores / len(query_labels)  # CMC得分
-    mAP = np.mean(AP)
+    # mAP = np.mean(AP)
     print(
-        'Rank-1: {:.6f} Rank-5: {:.6f} Rank-10: {:.6f} mAP: {:.6f}'.format(CMC[0].item(), CMC[4].item(), CMC[9].item(),
-                                                                           mAP.item()))
+        'Rank-1: {:.6f} Rank-5: {:.6f} Rank-10: {:.6f}'.format(CMC[0].item(), CMC[4].item(), CMC[9].item(), ))
     print('Done calculating accuracy.')
-    return CMC, mAP
+    return CMC
 
 
 # def evaluate(test_loader, query_loader, test_filepath, query_filepath):
